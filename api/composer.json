@@ -1,5 +1,11 @@
 {
     "require": {
-        "google/apiclient": "^2.15"
+        "google/apiclient": "^2.15",
+        "google/apiclient-services": "0.355.0"
+    },
+    "extra": {
+        "google/apiclient-services": [
+            "Calendar"
+        ]
     }
 }
