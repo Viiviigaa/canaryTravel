@@ -119,6 +119,7 @@ ini_set('display_errors', 1);
             <div class="offcanvas-body d-flex flex-column">
                 <ul class="list-group">
                     <li class="list-group-item"><a href="informacionCuenta.php">Mi cuenta</a></li>
+                    <li class="list-group-item"><a href="misReservas.php">Mis Reservas</a></li>
                     <li class="list-group-item"><a href="#">Suscripción</a></li>
                     <li class="list-group-item"><a href="#">Recomendaciones</a></li>
                     <li class="list-group-item"><a href="#">Contacto</a></li>

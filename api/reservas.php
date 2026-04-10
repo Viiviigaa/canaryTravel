@@ -2,12 +2,13 @@
 
     include_once 'conectar.php';
     
-    function insertarReserva($idAlojamiento, $fechaInicio, $fechaFinal, $cantidadHuespedes, $dniReserva){
+    function insertarReserva($id, $idAlojamiento, $fechaInicio, $fechaFinal, $cantidadHuespedes, $dniReserva){
         try{
             $conn = conectarBD();
-            $sql = "INSERT INTO reservas (idAlojamiento, fechaInicio, fechaFinal, cantidadHuespedes, dniReserva) VALUES (:idAlojamiento, :fechaInicio, :fechaFinal, :cantidadHuespedes, :dniReserva)";
+            $sql = "INSERT INTO reservas (id, idAlojamiento, fechaInicio, fechaFinal, cantidadHuespedes, dniReserva) VALUES (:id, :idAlojamiento, :fechaInicio, :fechaFinal, :cantidadHuespedes, :dniReserva)";
             $stmt = $conn->prepare($sql);
             $resultado = $stmt->execute([
+                    'id' => $id,
                     'idAlojamiento'=> $idAlojamiento,
                     'fechaInicio' => $fechaInicio,
                     'fechaFinal' => $fechaFinal,

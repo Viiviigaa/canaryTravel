@@ -9,6 +9,72 @@ include 'reservas.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+function checkIdReserva($id){
+      $conn = conectarBD();
+      $sql = "Select ID from reservas where id = ?";
+      $stmt = $conn->prepare($sql);
+      $stmt->execute([$id]);
+      $idEncontrado = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $idEncontrado;
+  }
+
+function generarId(){
+  //Creacion de IDs de reserva aleatorio
+  $letras = range('a', 'z');
+  $letrasMayusculas = range('A', 'Z');
+  $numeros = range(0, 9);
+  $encontrado = false;
+
+  do{
+    $id = "";
+
+    for ($i=0; $i < 8; $i++) { 
+      if($i < 3){
+        $id .= $letras[array_rand($letras)];
+      }
+      else if($i > 2 && $i < 6 ){
+        $id .= $numeros[array_rand($numeros)];
+      }
+      else if($i == 6){
+        $id .= $letrasMayusculas[array_rand($letrasMayusculas)];
+      }
+      else if($i == 7){
+        $id .= $numeros[array_rand($numeros)];
+      }
+    }
+
+    if(!checkIdReserva($id)){
+      $encontrado = true;
+    }
+  }while(!$encontrado);
+  
+  return $id;
+}
+
+
+  if (!isset($_GET['id'], $_SESSION['fechaInicio'], $_SESSION['fechaFin'], $_SESSION['usuario'])) {
+      header('Location: index.php');
+      exit;
+  }
+
+  $fechaInicio = $_SESSION['fechaInicio'];
+  $fechaFin    = $_SESSION['fechaFin'];
+  $dniReserva  = $_SESSION['usuario'];
+  $huespedes   = $_GET['huespedes'] ?? 0;
+  $id_ver      = $_GET['id'];
+
+  $id = generarId();
+
+  $resultado = insertarReserva($id, $id_ver, $fechaInicio, $fechaFin, $huespedes, $dniReserva);
+  
+  if ($resultado) {
+      unset($_SESSION['fechaInicio']);
+      unset($_SESSION['fechaFin']);
+  } else {
+      header('Location: index.php?error=reserva_fallida');
+      exit;
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,24 +137,6 @@ ini_set('display_errors', 1);
   </style>
 </head>
 <body>
-  <?php
-  if (!isset($_GET['id'], $_SESSION['fechaInicio'], $_SESSION['fechaFin'], $_SESSION['usuario'])) {
-      header('Location: index.php');
-      exit;
-  }
-
-  $fechaInicio = $_SESSION['fechaInicio'];
-  $fechaFin    = $_SESSION['fechaFin'];
-  $dniReserva  = $_SESSION['usuario'];
-  $huespedes   = $_GET['huespedes'] ?? 0;
-  $id_ver      = $_GET['id'];
-
-  $resultado = insertarReserva($id_ver, $fechaInicio, $fechaFin, $huespedes, $dniReserva);
-  if (!$resultado) {
-      header('Location: index.php?error=reserva_fallida');
-      exit;
-  }
-?>
 
   <div class="container text-center">
     <h1>Reserva Completada con Éxito</h1>&nbsp;&nbsp;

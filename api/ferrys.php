@@ -61,7 +61,7 @@
                                 $stmt = $conn->query("SELECT nombre FROM destinos");
                                 $destinos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 foreach ($destinos as $d) {
-                                    $selected = (isset($_POST['destinos']) && $_POST['destinos'] == $d['nombre']) ? 'selected' : '';
+                                    $selected = (isset($_POST['origen']) && $_POST['origen'] == $d['nombre']) ? 'selected' : '';
                                     echo "<option value='" . htmlspecialchars($d['nombre']) . "' $selected>{$d['nombre']}</option>";
                                 }
                             } catch (PDOException $e) {
